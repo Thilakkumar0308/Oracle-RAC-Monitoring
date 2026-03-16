@@ -11,14 +11,25 @@ If you're not using Linux servers or want to install the plugin manually, follow
 	pip3 install oracledb
 	```
 
-- Roles need to be granted
+### Database User and Required Privileges
 
-	```sql
-	grant select_catalog_role to {username}
-	```
-	```sql
-	grant create session to {username}
-	```
+Create a dedicated Oracle RAC user for the RAC monitoring plugin and grant the required privileges.
+
+```sql
+CREATE USER {username} IDENTIFIED BY "{password}";
+
+GRANT CREATE SESSION TO {username};
+
+GRANT SELECT ON SYS.V_$PARAMETER TO {username};
+GRANT SELECT ON SYS.V_$DATABASE TO {username};
+GRANT SELECT ON SYS.V_$INSTANCE TO {username};
+
+GRANT SELECT ON SYS.GV_$SYSMETRIC TO {username};
+GRANT SELECT ON SYS.GV_$SYSSTAT TO {username};
+GRANT SELECT ON SYS.GV_$STATNAME TO {username};
+GRANT SELECT ON SYS.GV_$SYSTEM_EVENT TO {username};
+GRANT SELECT ON SYS.GV_$INSTANCE TO {username};
+```
 
 ### Installation  
 
@@ -54,8 +65,8 @@ If you're not using Linux servers or want to install the plugin manually, follow
 	hostname = "localhost"
 	port = "1521"
 	sid = "ORCL"
-	username = "oracle_username"
-	password = "oracle_password"
+	username = "oracle_rac_username"
+	password = "oracle_rac_password"
 	tls = "false"
 	wallet_location = "/opt/oracle/product/19c/dbhome_1/network/admin/wallets"
 	oracle_home = "/opt/oracle/product/19c/dbhome_1/"
@@ -64,8 +75,8 @@ If you're not using Linux servers or want to install the plugin manually, follow
 	hostname = "localhost"
 	port = "1521"
 	sid = "ORCL"
-	username = "oracle_username"
-	password = "oracle_password"
+	username = "oracle_rac_username"
+	password = "oracle_rac_password"
 	tls = "false"
 	wallet_location = "/opt/oracle/product/19c/dbhome_1/network/admin/wallets"
 	oracle_home = "/opt/oracle/product/19c/dbhome_1/"
